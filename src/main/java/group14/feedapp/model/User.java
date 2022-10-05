@@ -7,7 +7,7 @@ import javax.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "account")
+@Entity(name = "VoteUser")
 public class User {
     @Id
     private String id;

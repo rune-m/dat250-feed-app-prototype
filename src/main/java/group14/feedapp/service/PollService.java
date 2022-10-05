@@ -19,4 +19,10 @@ public class PollService implements IPollService {
         return pollOptional.isPresent() ? pollOptional.get() : null;
     }
 
+    @Override
+    public Poll getPollByPincode(int pincode) {
+        Optional<Poll> pollOptional = repository.findByPincode(pincode);
+        return pollOptional.isPresent() ? pollOptional.get() : null;
+    }
+
 }
