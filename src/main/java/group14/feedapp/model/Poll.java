@@ -18,19 +18,19 @@ public class Poll {
     private String answerA;
     private String answerB;
     private boolean isPrivate;
-    private LocalDateTime stateDate;
+    private LocalDateTime startDate;
     private LocalDateTime endDate;
     private boolean isClosed;
 
     @ManyToOne
     @JoinColumn(name = "userId", referencedColumnName = "id")
-    public User user;
+    private User user;
 
     @OneToMany(mappedBy = "poll", cascade = CascadeType.PERSIST)
-    public Set<Vote> votes = new HashSet<>();
+    private Set<Vote> votes = new HashSet<>();
 
     @OneToMany(mappedBy = "poll", cascade = CascadeType.PERSIST)
-    public Set<IoTVotes> iotVotes = new HashSet<>();
+    private Set<IoTVotes> iotVotes = new HashSet<>();
 
 
     public Poll() {}
@@ -40,7 +40,7 @@ public class Poll {
                 String answerA,
                 String answerB,
                 boolean isPrivate,
-                LocalDateTime stateDate,
+                LocalDateTime startDate,
                 LocalDateTime endDate,
                 boolean isClosed,
                 User user) {
@@ -49,7 +49,7 @@ public class Poll {
         this.answerA = answerA;
         this.answerB = answerB;
         this.isPrivate = isPrivate;
-        this.stateDate = stateDate;
+        this.startDate = startDate;
         this.endDate = endDate;
         this.isClosed = isClosed;
         this.user = user;
@@ -103,12 +103,12 @@ public class Poll {
         isPrivate = aPrivate;
     }
 
-    public LocalDateTime getStateDate() {
-        return stateDate;
+    public LocalDateTime getStartDate() {
+        return startDate;
     }
 
-    public void setStateDate(LocalDateTime stateDate) {
-        this.stateDate = stateDate;
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 
     public LocalDateTime getEndDate() {
