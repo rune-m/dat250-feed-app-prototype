@@ -1,7 +1,7 @@
 package group14.feedapp.service;
 
 import group14.feedapp.model.User;
-import group14.feedapp.repository.IUserRepository;
+import group14.feedapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.Optional;
 public class UserService implements IUserService {
 
     @Autowired
-    private IUserRepository repository;
+    private UserRepository repository;
 
     @Override
     public User getUserById(String id) {
