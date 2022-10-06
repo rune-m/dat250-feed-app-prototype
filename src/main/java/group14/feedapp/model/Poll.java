@@ -26,10 +26,10 @@ public class Poll {
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy = "poll", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "poll", cascade = {CascadeType.PERSIST, CascadeType.REMOVE })
     private Set<Vote> votes = new HashSet<>();
 
-    @OneToMany(mappedBy = "poll", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "poll", cascade = {CascadeType.PERSIST, CascadeType.REMOVE })
     private Set<IoTVotes> iotVotes = new HashSet<>();
 
 

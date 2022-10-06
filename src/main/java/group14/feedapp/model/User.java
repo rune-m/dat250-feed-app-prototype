@@ -15,10 +15,10 @@ public class User {
     private String name;
     private boolean isAdmin;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST})
     private Set<Vote> votes = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private Set<Poll> polls = new HashSet<>();
 
     public String getId() {
