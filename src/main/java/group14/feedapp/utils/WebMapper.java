@@ -48,4 +48,7 @@ public class WebMapper {
         return userWeb;
     }
 
+    public ModelMapper getMapper() {
+        return mapper;
+    }
 }
