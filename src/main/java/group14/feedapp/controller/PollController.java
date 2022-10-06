@@ -7,10 +7,10 @@ import group14.feedapp.utils.WebMapper;
 import group14.feedapp.web.PollWeb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/poll")
@@ -21,8 +21,15 @@ public class PollController {
 
     private WebMapper mapper = new WebMapper();
 
+    @GetMapping
+    public ResponseEntity<List<PollWeb>> getAllPolls(@RequestHeader String userId) {
+        List<Poll> polls = pollService.getAllOngoingPolls(userId);
+        List<PollWeb> mappedPolls = polls.stream().map(poll -> mapper.MapPollToWeb(poll, userId)).collect(Collectors.toList());
+        return ResponseEntity.ok(mappedPolls);
+    }
+
     @GetMapping("/{pincode}")
-    public ResponseEntity<Object> getPollByPincode(@PathVariable("pincode") String pincode) {
+    public ResponseEntity<Object> getPollByPincode(@RequestHeader String userId, @PathVariable("pincode") String pincode) {
         // TODO: Flytte parsing-logikk til service?
         int pinParsed = -1;
         try {
@@ -33,7 +40,7 @@ public class PollController {
             );
         }
 
-        Poll poll = pollService.getPollByPincode(pinParsed);
+        Poll poll = pollService.getPollByPincode(pinParsed, userId);
         if (poll == null) return ResponseEntity.status(404).body(
                 new ErrorResponse(404, "Not found", String.format("Poll with pin %s doesn't exist.", pincode))
         );
