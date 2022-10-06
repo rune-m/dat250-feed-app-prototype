@@ -1,5 +1,6 @@
 package group14.feedapp.model;
 
+import group14.feedapp.enums.Answer;
 import org.eclipse.persistence.annotations.UuidGenerator;
 
 import javax.persistence.Entity;
@@ -13,10 +14,6 @@ public class Vote {
     @Id
     @GeneratedValue(generator = "voteIdGenerator")
     private String id;
-
-    public enum Answer {
-        ANSWER_A, ANSWER_B
-    }
 
     private Answer answer;
 
