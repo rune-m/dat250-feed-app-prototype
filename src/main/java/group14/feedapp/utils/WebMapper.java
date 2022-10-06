@@ -1,11 +1,16 @@
 package group14.feedapp.utils;
 
+import group14.feedapp.enums.Answer;
 import group14.feedapp.model.Poll;
 import group14.feedapp.model.User;
+import group14.feedapp.model.Vote;
 import group14.feedapp.web.PollWeb;
 import group14.feedapp.web.UserWeb;
 import org.apache.commons.lang3.tuple.Pair;
 import org.modelmapper.ModelMapper;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class WebMapper {
 
@@ -13,12 +18,27 @@ public class WebMapper {
     private IPollUtils pollUtils = new PollUtils();
 
     public PollWeb MapPollToWeb(Poll poll) {
+        return MapPollToWeb(poll, null);
+    }
+
+    public PollWeb MapPollToWeb(Poll poll, String userId) {
         PollWeb pollWeb = mapper.map(poll, PollWeb.class);
         pollWeb.setUserId(poll.getUser().getId());
 
         Pair<Integer, Integer> counts = pollUtils.countPollVotes(poll);
         pollWeb.setAnswerACount(counts.getLeft());
         pollWeb.setAnswerBCount(counts.getRight());
+
+        if (userId != null) {
+            List<Vote> userVotes = poll.getVotes().stream()
+                    .filter(vote -> vote.getUser().getId().equals(userId))
+                    .collect(Collectors.toList());
+            if (userVotes.isEmpty()) {
+                pollWeb.setYourAnswer(Answer.NONE);
+            } else {
+                pollWeb.setYourAnswer(userVotes.stream().findFirst().get().getAnswer());
+            }
+        }
 
         return pollWeb;
     }

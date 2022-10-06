@@ -1,5 +1,8 @@
 package group14.feedapp.web;
 
+import group14.feedapp.enums.Answer;
+import group14.feedapp.model.Vote;
+
 import java.time.LocalDateTime;
 
 public class PollWeb {
@@ -16,6 +19,7 @@ public class PollWeb {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private boolean isClosed;
+    private Answer yourAnswer;
 
     public String getId() {
         return id;
@@ -111,5 +115,13 @@ public class PollWeb {
 
     public void setClosed(boolean closed) {
         isClosed = closed;
+    }
+
+    public Answer getYourAnswer() {
+        return yourAnswer;
+    }
+
+    public void setYourAnswer(Answer yourAnswer) {
+        this.yourAnswer = yourAnswer;
     }
 }
