@@ -2,15 +2,13 @@ package group14.feedapp.controller;
 
 import group14.feedapp.exception.ErrorResponse;
 import group14.feedapp.model.Poll;
+import group14.feedapp.model.User;
 import group14.feedapp.service.IPollService;
 import group14.feedapp.utils.WebMapper;
 import group14.feedapp.web.PollWeb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/poll")
@@ -42,5 +40,24 @@ public class PollController {
 
         return ResponseEntity.ok(pollWeb);
     }
+
+    @PostMapping()
+    public ResponseEntity<Object> createPoll(@RequestBody String pincode,
+                                             String question,
+                                             String answerA,
+                                             String answerB,
+                                             String isPrivate,
+                                             String startDate,
+                                             String endDate,
+                                             String isClosed,
+                                             String userID){
+
+        return (createdPoll != null) ? ResponseEntity.ok(createdPoll): ResponseEntity.status(404).body(
+                                                                        new ErrorResponse(404,
+                                                                                "Already exist",
+                                                                                "Poll already exist"));
+    }
+
+
 
 }
