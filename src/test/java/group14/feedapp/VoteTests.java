@@ -3,9 +3,11 @@ package group14.feedapp;
 import group14.feedapp.enums.Answer;
 import group14.feedapp.exception.ResourceAlreadyExistsException;
 import group14.feedapp.exception.ResourceNotFoundException;
+import group14.feedapp.model.User;
 import group14.feedapp.model.VoteCreateRequest;
 import group14.feedapp.repository.PollRepository;
 import group14.feedapp.repository.VoteRepository;
+import group14.feedapp.service.IAuthService;
 import group14.feedapp.service.IPollService;
 import group14.feedapp.service.IVoteService;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 @SpringBootTest
 public class VoteTests {
+    @Autowired
+    private IAuthService authService;
     @Autowired
     private IVoteService voteService;
     @Autowired
@@ -74,10 +78,12 @@ public class VoteTests {
 //    }
     @Test
     void createVote_pollDoesNotExists_throwsException() {
+        var user = authService.getAuthorizedUser("10");
+
         VoteCreateRequest createRequest = new VoteCreateRequest();
         createRequest.setPollId("NOT_EXISTS");
         createRequest.setAnswer(Answer.ANSWER_A);
 
-        assertThrowsExactly(ResourceNotFoundException.class, () -> voteService.createVote(createRequest, "10"));
+        assertThrowsExactly(ResourceNotFoundException.class, () -> voteService.createVote(createRequest, user));
     }
 }
