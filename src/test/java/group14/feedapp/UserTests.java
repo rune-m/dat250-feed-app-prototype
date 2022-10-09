@@ -1,14 +1,9 @@
 package group14.feedapp;
 
 import group14.feedapp.exception.NoAccessException;
-import group14.feedapp.exception.ResourceNotFoundException;
 import group14.feedapp.model.User;
-import group14.feedapp.repository.PollRepository;
-import group14.feedapp.repository.VoteRepository;
 import group14.feedapp.service.IAuthService;
-import group14.feedapp.service.IPollService;
 import group14.feedapp.service.IUserService;
-import group14.feedapp.service.IVoteService;
 import group14.feedapp.utils.WebMapper;
 import group14.feedapp.web.UserCreateRequest;
 import org.junit.jupiter.api.Test;

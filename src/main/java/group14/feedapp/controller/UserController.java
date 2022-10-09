@@ -1,6 +1,5 @@
 package group14.feedapp.controller;
 
-import group14.feedapp.exception.NoAccessException;
 import group14.feedapp.exception.ResourceNotFoundException;
 import group14.feedapp.model.User;
 import group14.feedapp.service.IAuthService;
