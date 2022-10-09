@@ -51,21 +51,43 @@ public class PollController {
         return ResponseEntity.ok(pollWeb);
     }
 
-    @PostMapping()
-    public ResponseEntity<Object> createPoll(@RequestBody String pincode,
-                                             String question,
-                                             String answerA,
-                                             String answerB,
-                                             String isPrivate,
-                                             String startDate,
-                                             String endDate,
-                                             String isClosed,
-                                             String userID){
+/*    @PostMapping("/{pincode}/{question}/{answerA}/{answerB}/{answerB}/{isPrivate}/{startDate}/{endDate}/{isClosed}")
+    public ResponseEntity<Object> createPoll(@RequestHeader("userID") String userID,
+                                             @PathVariable("pincode") String pincode,
+                                             @PathVariable("question") String question,
+                                             @PathVariable("answerA") String answerA,
+                                             @PathVariable("answerB") String answerB,
+                                             @PathVariable("isPrivate") String isPrivate,
+                                             @PathVariable("startDate") String startDate,
+                                             @PathVariable("endDate") String endDate,
+                                             @PathVariable("isClosed")String isClosed){
+        //Might be easier to request body instead of all these parameters!!!
+        String response = pollService.createPoll(pincode,
+                                                question,
+                                                answerA,
+                                                answerB,
+                                                isPrivate,
+                                                startDate,
+                                               endDate,
+                                                isClosed,
+                                                userID);
+        if (response == "SUCCESS"){return ResponseEntity.ok(response);}
+        else {
+            return ResponseEntity.status(400).body(
+                new ErrorResponse(400, "Bad request", response));
+        }
+    }*/
 
-        return (createdPoll != null) ? ResponseEntity.ok(createdPoll): ResponseEntity.status(404).body(
-                                                                        new ErrorResponse(404,
-                                                                                "Already exist",
-                                                                                "Poll already exist"));
+    @PostMapping
+    public ResponseEntity<Object> createPoll(@RequestBody Poll poll){
+        System.out.println(poll.getId());
+        String response = pollService.createPoll(poll);
+        if (response == "SUCCESS"){
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.status(400).body(
+                new ErrorResponse(400, "Bad request", response));
+
     }
 
 

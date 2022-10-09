@@ -13,6 +13,8 @@ public interface IPollService {
     Poll getPollByPincode(int pincode, String userId);
     List<Poll> getAllOngoingPolls(String userId);
 
+    String createPoll(Poll poll);
+
     String createPoll(String pincode,
                       String question,
                       String answerA,
@@ -24,8 +26,6 @@ public interface IPollService {
                       String userID);
 
     int parseInt(String number);
-
-    boolean parseBool(String bool);
 
     LocalDateTime parseDateTime(String dateTime);
 

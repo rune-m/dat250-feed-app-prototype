@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
 @Service
 public class PollService implements IPollService {
 
-    @Autowired
-    private UserService userRepository;
 
     @Autowired
     private PollRepository repository;
@@ -86,6 +84,15 @@ public class PollService implements IPollService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public String createPoll(Poll poll) {
+        if (userService.getUserById(poll.getUser().getId()) == null){
+            return String.format("User with ID \'%s\' is not a registered user.", poll.getUser().getId());
+        }
+        repository.save(poll);
+        return "SUCCESS";
+    }
+
 
     @Override
     public String createPoll(String pincode,
@@ -99,7 +106,8 @@ public class PollService implements IPollService {
                            String userID) {
 
         int pinParsed = parseInt(pincode);
-        if (pinParsed < 0) {return String.format("pincode '%s' is not an number", pincode);}
+        System.out.println(pincode);
+        if (pinParsed < 0) {return String.format("pincode \'%s\' is not an number", pincode);}
 
         isPrivate = isPrivate.toLowerCase();
         boolean parseIsPrivate;
@@ -125,7 +133,20 @@ public class PollService implements IPollService {
         int userId = parseInt(userID);
         if (userId < 0){return String.format("UserID '%s' is not an integer.", userID);}
 
-        User user = UserService.getUserById(userId);
+        User user = userService.getUserById(userID);
+        if (user == null){return String.format("User with ID '%s' does not exist.", userID);}
+
+        repository.save(new Poll(pinParsed,
+                                question,
+                                answerA,
+                                answerB,
+                                parseIsPrivate,
+                                parsedStartDate,
+                                parsedEndDate,
+                                parsedIsClosed,
+                                user));
+
+        return "SUCCESS";
 
 
 
@@ -133,13 +154,12 @@ public class PollService implements IPollService {
 
     @Override
     public int parseInt(String number) {
-        int pinParsed = -1;
         try {
-            pinParsed = Integer.parseInt(number);
+            int pinParsed = Integer.parseInt(number);
+            return pinParsed;
         } catch (NumberFormatException e) {
             return -1;
         }
-        return pinParsed;
     }
 
 
