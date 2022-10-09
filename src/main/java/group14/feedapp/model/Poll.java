@@ -4,7 +4,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,11 +29,8 @@ public class Poll {
     @OneToMany(mappedBy = "poll", cascade = {CascadeType.PERSIST, CascadeType.REMOVE })
     private Set<Vote> votes = new HashSet<>();
 
-    @OneToMany(mappedBy = "poll", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private Set<IoTVote> deviceVotes = new HashSet<>();
-
     @OneToMany(mappedBy = "poll", cascade = {CascadeType.PERSIST, CascadeType.REMOVE })
-    private Set<IoTVote> iotVotes = new HashSet<>();
+    private Set<DeviceVote> deviceVotes = new HashSet<>();
 
 
     public Poll() {}
@@ -147,11 +143,11 @@ public class Poll {
         this.votes = votes;
     }
 
-    public Set<IoTVote> getIotVotes() {
-        return iotVotes;
+    public Set<DeviceVote> getDeviceVotes() {
+        return deviceVotes;
     }
 
-    public void setIotVotes(Set<IoTVote> iotVotes) {
-        this.iotVotes = iotVotes;
+    public void setDeviceVotes(Set<DeviceVote> iotVotes) {
+        this.deviceVotes = iotVotes;
     }
 }

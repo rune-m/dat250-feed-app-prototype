@@ -1,8 +1,8 @@
 package group14.feedapp.service;
 
 import group14.feedapp.exception.ResourceNotFoundException;
-import group14.feedapp.model.IoTDevice;
-import group14.feedapp.repository.IoTDeviceRepository;
+import group14.feedapp.model.Device;
+import group14.feedapp.repository.DeviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,22 +11,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class IoTDeviceService {
+public class DeviceService {
 
     @Autowired
     private UserService userService;
 
     @Autowired
-    private IoTDeviceRepository repository;
+    private DeviceRepository repository;
 
-    public IoTDevice createDevice(IoTDevice device) {
-        IoTDevice newDevice = repository.save(device);
+    public Device createDevice(Device device) {
+        Device newDevice = repository.save(device);
         return newDevice;
     }
 
-    public List<IoTDevice> getAllDevices(String userId) {
+    public List<Device> getAllDevices(String userId) {
         var user = userService.getUserById(userId);
-        List<IoTDevice> devices = new ArrayList<>();
+        List<Device> devices = new ArrayList<>();
 
         if (user == null) {
             throw new ResourceNotFoundException("UserId " + userId);
@@ -39,10 +39,8 @@ public class IoTDeviceService {
         return devices;
     }
 
-    public IoTDevice getDeviceById(String id) {
-        Optional<IoTDevice> deviceOptional = repository.findById(id);
-        return deviceOptional.isPresent()
-                ? deviceOptional.get()
-                : null;
+    public Device getDeviceById(String id) {
+        Optional<Device> deviceOptional = repository.findById(id);
+        return deviceOptional.orElse(null);
     }
 }

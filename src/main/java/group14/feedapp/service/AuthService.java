@@ -4,7 +4,6 @@ import group14.feedapp.exception.ResourceNotFoundException;
 import group14.feedapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 @Service
 public class AuthService implements IAuthService {

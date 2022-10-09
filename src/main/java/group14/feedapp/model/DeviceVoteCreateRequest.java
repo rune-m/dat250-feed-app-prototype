@@ -1,6 +1,6 @@
-package group14.feedapp.web;
+package group14.feedapp.model;
 
-public class IoTVoteCreateRequestWeb {
+public class DeviceVoteCreateRequest {
 
     private int answerA;
     private int answerB;

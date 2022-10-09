@@ -1,11 +1,19 @@
-package group14.feedapp.model;
+package group14.feedapp.web;
 
-public class IoTVoteCreateRequest {
+public class DeviceVoteWeb {
 
+    private String id;
     private int answerA;
     private int answerB;
+    private PollWeb poll;
 
-    private String pollId;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public int getAnswerA() {
         return answerA;
@@ -23,11 +31,11 @@ public class IoTVoteCreateRequest {
         this.answerB = answerB;
     }
 
-    public String getPollId() {
-        return pollId;
+    public PollWeb getPoll() {
+        return poll;
     }
 
-    public void setPollId(String pollId) {
-        this.pollId = pollId;
+    public void setPoll(PollWeb poll) {
+        this.poll = poll;
     }
 }
