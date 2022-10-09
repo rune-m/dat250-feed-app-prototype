@@ -1,17 +1,12 @@
 package group14.feedapp.service;
 
-import group14.feedapp.exception.ErrorResponse;
+
 import group14.feedapp.model.Poll;
 import group14.feedapp.model.User;
 import group14.feedapp.repository.PollRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.DateTimeException;
-import java.time.LocalDateTime;
-import java.util.Locale;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

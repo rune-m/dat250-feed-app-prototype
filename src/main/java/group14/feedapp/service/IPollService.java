@@ -1,9 +1,6 @@
 package group14.feedapp.service;
 
 import group14.feedapp.model.Poll;
-import group14.feedapp.model.User;
-
-import java.time.LocalDateTime;
 
 import java.util.List;
 
