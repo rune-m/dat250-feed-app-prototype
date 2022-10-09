@@ -80,6 +80,24 @@ public class PollService implements IPollService {
     }
 
     @Override
+    public String createPoll(Poll poll) {
+        String userID = poll.getUser().getId();
+
+        if (userService.getUserById(userID) == null){
+
+            return String.format("User with ID \'%s\' is not a registered user.", userID);
+        }
+        try{
+            repository.save(poll);
+            return "SUCCESS";
+        } catch (Exception e) {
+            return String.format("Could not save poll");
+        }
+
+
+    }
+
+    @Override
     public void deletePoll(String pollId, String userId) {
         Optional<Poll> pollOptional = repository.findById(pollId);
         if (pollOptional.isPresent()) {

@@ -13,4 +13,7 @@ public interface IPollService {
     List<Poll> getAllOngoingPolls(String userId);
     void deletePoll(String pollId, String userId) throws NoAccessException, ResourceNotFoundException;
 
+    String createPoll(Poll poll);
+
+
 }
