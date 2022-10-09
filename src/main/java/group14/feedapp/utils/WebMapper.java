@@ -1,14 +1,8 @@
 package group14.feedapp.utils;
 
 import group14.feedapp.enums.Answer;
-import group14.feedapp.model.Poll;
-import group14.feedapp.model.User;
-import group14.feedapp.model.Vote;
-import group14.feedapp.model.VoteCreateRequest;
-import group14.feedapp.web.PollWeb;
-import group14.feedapp.web.UserWeb;
-import group14.feedapp.web.VoteCreateRequestWeb;
-import group14.feedapp.web.VoteWeb;
+import group14.feedapp.model.*;
+import group14.feedapp.web.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.modelmapper.ModelMapper;
 
@@ -57,6 +51,26 @@ public class WebMapper {
     public VoteWeb MapVoteToWeb(Vote vote){
         VoteWeb voteWeb = mapper.map(vote, VoteWeb.class);
         return voteWeb;
+    }
+
+    public IoTVoteCreateRequest MapIoTVoteRequestToInternal(IoTVoteCreateRequestWeb iotVoteRequest) {
+        var iotVoteInternal = mapper.map(iotVoteRequest, IoTVoteCreateRequest.class);
+        return iotVoteInternal;
+    }
+
+    public IoTVoteWeb MapDeviceVoteToWeb(IoTVote deviceVote) {
+        var deviceVoteWeb = mapper.map(deviceVote, IoTVoteWeb.class);
+        return deviceVoteWeb;
+    }
+
+    public IoTDeviceWeb MapIoTDeviceToWeb(IoTDevice device) {
+        IoTDeviceWeb deviceWeb = mapper.map(device, IoTDeviceWeb.class);
+        return deviceWeb;
+    }
+
+    public IoTDevice MapIoTCreateRequestToInternal(DeviceCreateRequest request) {
+        IoTDevice device = mapper.map(request, IoTDevice.class);
+        return device;
     }
 
     public ModelMapper getMapper() {

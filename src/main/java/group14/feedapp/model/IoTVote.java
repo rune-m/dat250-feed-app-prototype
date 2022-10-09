@@ -1,6 +1,6 @@
 package group14.feedapp.model;
 
-import org.eclipse.persistence.annotations.UuidGenerator;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,18 +8,18 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-@UuidGenerator(name = "iotVotesIdGenerator")
-public class IoTVotes {
+public class IoTVote {
 
     @Id
-    @GeneratedValue(generator = "iotVotesIdGenerator")
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
 
     private int answerA;
     private int answerB;
 
     @ManyToOne
-    private IoTVotingDevice votingDevice;
+    private IoTDevice votingDevice;
 
     @ManyToOne
     private Poll poll;
@@ -48,11 +48,11 @@ public class IoTVotes {
         this.answerB = answerB;
     }
 
-    public IoTVotingDevice getVotingDevice() {
+    public IoTDevice getVotingDevice() {
         return votingDevice;
     }
 
-    public void setVotingDevice(IoTVotingDevice votingDevice) {
+    public void setVotingDevice(IoTDevice votingDevice) {
         this.votingDevice = votingDevice;
     }
 
