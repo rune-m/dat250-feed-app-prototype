@@ -1,7 +1,9 @@
 package group14.feedapp.controller;
 
+import group14.feedapp.exception.NoAccessException;
 import group14.feedapp.exception.ResourceNotFoundException;
 import group14.feedapp.model.User;
+import group14.feedapp.service.IAuthService;
 import group14.feedapp.service.IUserService;
 import group14.feedapp.utils.WebMapper;
 import group14.feedapp.web.UserCreateRequest;
@@ -18,6 +20,8 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
+    @Autowired
+    private IAuthService authService;
     private WebMapper mapper = new WebMapper();
 
     @GetMapping("/{id}")
@@ -29,6 +33,19 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserWeb> createUser(@RequestBody UserCreateRequest user) {
         User newUser = userService.createUser(mapper.getMapper().map(user, User.class));
+        return ResponseEntity.ok(mapper.MapUserToWeb(newUser));
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserWeb> updateUser(
+            @RequestHeader String token,
+            @RequestBody UserCreateRequest user,
+            @RequestAttribute String userId
+    ) {
+        User authorizedUser = authService.getAuthorizedUser(token);
+
+        user.setId(userId);
+        User newUser = userService.updateUser(authorizedUser, mapper.getMapper().map(user, User.class));
         return ResponseEntity.ok(mapper.MapUserToWeb(newUser));
     }
 

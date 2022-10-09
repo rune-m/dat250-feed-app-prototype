@@ -7,6 +7,9 @@ INSERT INTO vote_user (id, name, is_admin)
 INSERT INTO vote_user (id, name, is_admin)
     VALUES ('30', 'Harald', false);
 
+INSERT INTO vote_user (id, name, is_admin)
+    VALUES ('40', 'Admin', true);
+
 INSERT INTO poll (id, pincode, question, answera, answerb, is_private, start_date, end_date, is_closed, user_id)
     VALUES ('100', 123456, 'Ananas på pizza?', 'Nei', 'Absolutt ikke!', 0, {ts '2022-10-10 18:47:52.69'}, {ts '2022-10-30 18:47:52.69'}, 0, '10');
 

@@ -1,9 +1,10 @@
 package group14.feedapp.web;
 
-public class UserCreateRequest {
+public class UserUpdateRequest {
 
     private String id;
     private String name;
+    private boolean isAdmin;
 
     public String getId() {
         return id;
@@ -19,5 +20,13 @@ public class UserCreateRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }
