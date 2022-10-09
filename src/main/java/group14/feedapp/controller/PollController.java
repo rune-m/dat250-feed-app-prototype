@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @RestController
 @RequestMapping("/api/poll")
 public class PollController {
@@ -90,5 +91,18 @@ public class PollController {
             );
         }
     }
+
+    @PostMapping
+    public ResponseEntity<Object> createPoll(@RequestBody Poll poll){
+        String response = pollService.createPoll(poll);
+        if (response == "SUCCESS"){
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.status(400).body(
+                new ErrorResponse(400, "Bad request", response));
+
+    }
+
+
 
 }

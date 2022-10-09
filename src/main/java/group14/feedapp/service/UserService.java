@@ -5,6 +5,7 @@ import group14.feedapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,5 +25,14 @@ public class UserService implements IUserService {
         User newUser = repository.save(user);
         return newUser;
     }
+
+    @Override
+    public List<User> getAllUsers(User user) {
+        if (!user.isAdmin()){
+            return null;
+        }
+        return repository.findAll();
+    }
+
 
 }
