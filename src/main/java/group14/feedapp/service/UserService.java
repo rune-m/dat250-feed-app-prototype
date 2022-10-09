@@ -18,7 +18,7 @@ public class UserService implements IUserService {
     @Override
     public User getUserById(String id) {
         Optional<User> accountOptional = repository.findById(id);
-        return accountOptional.isPresent() ? accountOptional.get() : null;
+        return accountOptional.orElse(null);
     }
 
     @Override

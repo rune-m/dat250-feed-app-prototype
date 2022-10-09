@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @UuidGenerator(name = "iotDeviceIdGenerator")
-public class IoTVotingDevice {
+public class Device {
     @Id
     @GeneratedValue(generator = "iotDeviceIdGenerator")
     private String id;
@@ -18,7 +18,7 @@ public class IoTVotingDevice {
     private String name;
 
     @OneToMany(mappedBy = "votingDevice", cascade = CascadeType.PERSIST)
-    private Set<IoTVotes> votes = new HashSet<>();
+    private Set<DeviceVote> votes = new HashSet<>();
 
     public String getId() {
         return id;
@@ -44,11 +44,11 @@ public class IoTVotingDevice {
         this.name = name;
     }
 
-    public Set<IoTVotes> getVotes() {
+    public Set<DeviceVote> getVotes() {
         return votes;
     }
 
-    public void setVotes(Set<IoTVotes> votes) {
+    public void setVotes(Set<DeviceVote> votes) {
         this.votes = votes;
     }
 }

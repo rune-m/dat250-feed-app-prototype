@@ -1,24 +1,17 @@
 package group14.feedapp.utils;
 
 import group14.feedapp.enums.Answer;
-import group14.feedapp.model.Poll;
-import group14.feedapp.model.User;
-import group14.feedapp.model.Vote;
-import group14.feedapp.model.VoteCreateRequest;
-import group14.feedapp.web.PollWeb;
-import group14.feedapp.web.UserWeb;
-import group14.feedapp.web.VoteCreateRequestWeb;
-import group14.feedapp.web.VoteWeb;
+import group14.feedapp.model.*;
+import group14.feedapp.web.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class WebMapper {
 
-    private ModelMapper mapper = new ModelMapper();
-    private IPollUtils pollUtils = new PollUtils();
+    private final ModelMapper mapper = new ModelMapper();
+    private final IPollUtils pollUtils = new PollUtils();
 
     public PollWeb MapPollToWeb(Poll poll) {
         return MapPollToWeb(poll, null);
@@ -35,7 +28,7 @@ public class WebMapper {
         if (userId != null) {
             List<Vote> userVotes = poll.getVotes().stream()
                     .filter(vote -> vote.getUser().getId().equals(userId))
-                    .collect(Collectors.toList());
+                    .toList();
             if (userVotes.isEmpty()) {
                 pollWeb.setYourAnswer(Answer.NONE);
             } else {
@@ -57,6 +50,26 @@ public class WebMapper {
     public VoteWeb MapVoteToWeb(Vote vote){
         VoteWeb voteWeb = mapper.map(vote, VoteWeb.class);
         return voteWeb;
+    }
+
+    public DeviceVoteCreateRequest MapDeviceVoteRequestToInternal(DeviceVoteCreateRequestWeb deviceVoteRequest) {
+        var deviceVoteInternal = mapper.map(deviceVoteRequest, DeviceVoteCreateRequest.class);
+        return deviceVoteInternal;
+    }
+
+    public DeviceVoteWeb MapDeviceVoteToWeb(DeviceVote deviceVote) {
+        var deviceVoteWeb = mapper.map(deviceVote, DeviceVoteWeb.class);
+        return deviceVoteWeb;
+    }
+
+    public DeviceWeb MapDeviceToWeb(Device device) {
+        DeviceWeb deviceWeb = mapper.map(device, DeviceWeb.class);
+        return deviceWeb;
+    }
+
+    public Device MapDeviceCreateRequestToInternal(DeviceCreateRequest request) {
+        Device device = mapper.map(request, Device.class);
+        return device;
     }
 
     public ModelMapper getMapper() {

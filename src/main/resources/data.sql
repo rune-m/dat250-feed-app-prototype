@@ -24,3 +24,6 @@ VALUES ('200', 666777, 'Sol eller regn?', 'Sol', 'Regn <3', 0, {ts '2022-9-10 18
 
 INSERT INTO vote (id, answer, poll_id, user_id)
 VALUES ('3000', 0, '200', '10');
+
+INSERT INTO device (id, pincode, name)
+VALUES ('100', 666777, 'feed-device-one');

@@ -19,12 +19,11 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-
     @Autowired
     private IUserService userService;
     @Autowired
     private IAuthService authService;
-    private WebMapper mapper = new WebMapper();
+    private final WebMapper mapper = new WebMapper();
 
     @GetMapping("/{id}")
     public ResponseEntity<UserWeb> getUserById(@PathVariable("id") String id) {
@@ -38,7 +37,7 @@ public class UserController {
         if (user == null){return ResponseEntity.status(404).body(null);}
         List<User> users = userService.getAllUsers(user);
         return users != null ?
-                ResponseEntity.ok(users.stream().map(usr -> mapper.MapUserToWeb(usr)).collect(Collectors.toList())) :
+                ResponseEntity.ok(users.stream().map(mapper::MapUserToWeb).collect(Collectors.toList())) :
                 ResponseEntity.status(403).body(null);
     }
 
@@ -71,9 +70,4 @@ public class UserController {
         responseHeaders.set("token", userLoginRequest.getUserId());
         return ResponseEntity.ok().headers(responseHeaders).body("");
     }
-
-
-
-
-
 }

@@ -1,13 +1,11 @@
 package group14.feedapp.model;
 
-import org.eclipse.persistence.annotations.UuidGenerator;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 public class Poll {
@@ -32,7 +30,7 @@ public class Poll {
     private Set<Vote> votes = new HashSet<>();
 
     @OneToMany(mappedBy = "poll", cascade = {CascadeType.PERSIST, CascadeType.REMOVE })
-    private Set<IoTVotes> iotVotes = new HashSet<>();
+    private Set<DeviceVote> deviceVotes = new HashSet<>();
 
 
     public Poll() {}
@@ -145,11 +143,11 @@ public class Poll {
         this.votes = votes;
     }
 
-    public Set<IoTVotes> getIotVotes() {
-        return iotVotes;
+    public Set<DeviceVote> getDeviceVotes() {
+        return deviceVotes;
     }
 
-    public void setIotVotes(Set<IoTVotes> iotVotes) {
-        this.iotVotes = iotVotes;
+    public void setDeviceVotes(Set<DeviceVote> iotVotes) {
+        this.deviceVotes = iotVotes;
     }
 }

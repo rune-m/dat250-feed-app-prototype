@@ -25,7 +25,7 @@ public class PollService implements IPollService {
     @Override
     public Poll getPollById(String id) {
         Optional<Poll> pollOptional = repository.findById(id);
-        return pollOptional.isPresent() ? pollOptional.get() : null;
+        return pollOptional.orElse(null);
     }
 
     @Override
@@ -85,13 +85,13 @@ public class PollService implements IPollService {
 
         if (userService.getUserById(userID) == null){
 
-            return String.format("User with ID \'%s\' is not a registered user.", userID);
+            return String.format("User with ID '%s' is not a registered user.", userID);
         }
         try{
             repository.save(poll);
             return "SUCCESS";
         } catch (Exception e) {
-            return String.format("Could not save poll");
+            return "Could not save poll";
         }
 
 
