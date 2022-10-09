@@ -35,6 +35,7 @@ public class UserService implements IUserService {
         User newUser = repository.save(updatedUser);
         return newUser;
     }
+    @Override
     public List<User> getAllUsers(User user) {
         if (!user.isAdmin()){
             return null;
