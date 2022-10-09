@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class IoTVote {
+public class DeviceVote {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -19,7 +19,7 @@ public class IoTVote {
     private int answerB;
 
     @ManyToOne
-    private IoTDevice votingDevice;
+    private Device votingDevice;
 
     @ManyToOne
     private Poll poll;
@@ -48,11 +48,11 @@ public class IoTVote {
         this.answerB = answerB;
     }
 
-    public IoTDevice getVotingDevice() {
+    public Device getVotingDevice() {
         return votingDevice;
     }
 
-    public void setVotingDevice(IoTDevice votingDevice) {
+    public void setVotingDevice(Device votingDevice) {
         this.votingDevice = votingDevice;
     }
 

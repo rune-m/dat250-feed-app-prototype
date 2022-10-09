@@ -22,7 +22,7 @@ public class PollController {
     @Autowired
     private IPollService pollService;
 
-    private WebMapper mapper = new WebMapper();
+    private final WebMapper mapper = new WebMapper();
 
     @GetMapping
     public ResponseEntity<List<PollWeb>> getAllPolls(@RequestHeader String userId) {

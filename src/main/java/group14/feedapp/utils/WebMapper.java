@@ -7,12 +7,11 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class WebMapper {
 
-    private ModelMapper mapper = new ModelMapper();
-    private IPollUtils pollUtils = new PollUtils();
+    private final ModelMapper mapper = new ModelMapper();
+    private final IPollUtils pollUtils = new PollUtils();
 
     public PollWeb MapPollToWeb(Poll poll) {
         return MapPollToWeb(poll, null);
@@ -29,7 +28,7 @@ public class WebMapper {
         if (userId != null) {
             List<Vote> userVotes = poll.getVotes().stream()
                     .filter(vote -> vote.getUser().getId().equals(userId))
-                    .collect(Collectors.toList());
+                    .toList();
             if (userVotes.isEmpty()) {
                 pollWeb.setYourAnswer(Answer.NONE);
             } else {
@@ -53,23 +52,23 @@ public class WebMapper {
         return voteWeb;
     }
 
-    public IoTVoteCreateRequest MapIoTVoteRequestToInternal(IoTVoteCreateRequestWeb iotVoteRequest) {
-        var iotVoteInternal = mapper.map(iotVoteRequest, IoTVoteCreateRequest.class);
-        return iotVoteInternal;
+    public DeviceVoteCreateRequest MapDeviceVoteRequestToInternal(DeviceVoteCreateRequestWeb deviceVoteRequest) {
+        var deviceVoteInternal = mapper.map(deviceVoteRequest, DeviceVoteCreateRequest.class);
+        return deviceVoteInternal;
     }
 
-    public IoTVoteWeb MapDeviceVoteToWeb(IoTVote deviceVote) {
-        var deviceVoteWeb = mapper.map(deviceVote, IoTVoteWeb.class);
+    public DeviceVoteWeb MapDeviceVoteToWeb(DeviceVote deviceVote) {
+        var deviceVoteWeb = mapper.map(deviceVote, DeviceVoteWeb.class);
         return deviceVoteWeb;
     }
 
-    public IoTDeviceWeb MapIoTDeviceToWeb(IoTDevice device) {
-        IoTDeviceWeb deviceWeb = mapper.map(device, IoTDeviceWeb.class);
+    public DeviceWeb MapDeviceToWeb(Device device) {
+        DeviceWeb deviceWeb = mapper.map(device, DeviceWeb.class);
         return deviceWeb;
     }
 
-    public IoTDevice MapIoTCreateRequestToInternal(DeviceCreateRequest request) {
-        IoTDevice device = mapper.map(request, IoTDevice.class);
+    public Device MapDeviceCreateRequestToInternal(DeviceCreateRequest request) {
+        Device device = mapper.map(request, Device.class);
         return device;
     }
 
