@@ -1,9 +1,11 @@
 package group14.feedapp.utils;
 
 import group14.feedapp.enums.Answer;
+import group14.feedapp.model.IoTDevice;
 import group14.feedapp.model.Poll;
 import group14.feedapp.model.User;
 import group14.feedapp.model.Vote;
+import group14.feedapp.web.IoTDeviceWeb;
 import group14.feedapp.web.PollWeb;
 import group14.feedapp.web.UserWeb;
 import org.apache.commons.lang3.tuple.Pair;
@@ -46,6 +48,11 @@ public class WebMapper {
     public UserWeb MapUserToWeb(User user) {
         UserWeb userWeb = mapper.map(user, UserWeb.class);
         return userWeb;
+    }
+
+    public IoTDeviceWeb MapIoTDeviceToWeb(IoTDevice device) {
+        IoTDeviceWeb deviceWeb = mapper.map(device, IoTDeviceWeb.class);
+        return deviceWeb;
     }
 
     public ModelMapper getMapper() {

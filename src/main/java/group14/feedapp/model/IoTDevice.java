@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @UuidGenerator(name = "iotDeviceIdGenerator")
-public class IoTVotingDevice {
+public class IoTDevice {
     @Id
     @GeneratedValue(generator = "iotDeviceIdGenerator")
     private String id;
