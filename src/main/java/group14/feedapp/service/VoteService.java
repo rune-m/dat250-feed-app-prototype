@@ -2,6 +2,7 @@ package group14.feedapp.service;
 
 import group14.feedapp.exception.ResourceAlreadyExistsException;
 import group14.feedapp.exception.ResourceNotFoundException;
+import group14.feedapp.model.User;
 import group14.feedapp.model.Vote;
 import group14.feedapp.model.VoteCreateRequest;
 import group14.feedapp.repository.PollRepository;
@@ -23,21 +24,18 @@ public class VoteService implements IVoteService {
 
     @Override
     @Transactional
-    public Vote createVote(VoteCreateRequest voteRequest, String userId) {
+    public Vote createVote(VoteCreateRequest voteRequest, User authenticatedUser) {
         var pollId = voteRequest.getPollId();
         var poll = pollService.getPollById(pollId);
         if (poll == null) {
             throw new ResourceNotFoundException("PollId " + pollId);
         }
-        if (poll.getVotes().stream().anyMatch(_votes -> userId.equals(_votes.getUser().getId()))){
+        if (poll.getVotes().stream().anyMatch(_votes -> authenticatedUser.getId().equals(_votes.getUser().getId()))){
             throw new ResourceAlreadyExistsException("PollId " + pollId);
         }
-
-        var user = userService.getUserById(userId);
-
         var vote = new Vote();
         vote.setPoll(poll);
-        vote.setUser(user);
+        vote.setUser(authenticatedUser);
         vote.setAnswer(voteRequest.getAnswer());
         return voteRepository.save(vote);
     }
