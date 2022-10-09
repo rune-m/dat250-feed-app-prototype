@@ -1,6 +1,8 @@
 package group14.feedapp.controller;
 
 import group14.feedapp.exception.ErrorResponse;
+import group14.feedapp.exception.NoAccessException;
+import group14.feedapp.exception.ResourceNotFoundException;
 import group14.feedapp.model.Poll;
 import group14.feedapp.service.IPollService;
 import group14.feedapp.utils.WebMapper;
@@ -41,14 +43,53 @@ public class PollController {
             );
         }
 
-        Poll poll = pollService.getPollByPincode(pinParsed, userId);
-        if (poll == null) return ResponseEntity.status(404).body(
-                new ErrorResponse(404, "Not found", String.format("Poll with pin %s doesn't exist.", pincode))
-        );
+        try {
+            Poll poll = pollService.getPollByPincode(pinParsed, userId);
+            PollWeb pollWeb = mapper.MapPollToWeb(poll);
 
-        PollWeb pollWeb = mapper.MapPollToWeb(poll);
+            return ResponseEntity.ok(pollWeb);
 
-        return ResponseEntity.ok(pollWeb);
+        } catch (ResourceNotFoundException notFoundException) {
+            return ResponseEntity.status(notFoundException.getHttpStatus()).body(
+                new ErrorResponse(
+                    notFoundException.getHttpStatus().value(),
+                    notFoundException.getHttpStatus().getReasonPhrase(),
+                    String.format("Poll with pin %s doesn't exist.", pincode)
+                )
+            );
+        } catch (NoAccessException noAccessException) {
+            return ResponseEntity.status(noAccessException.getHttpStatus()).body(
+                new ErrorResponse(
+                    noAccessException.getHttpStatus().value(),
+                    noAccessException.getHttpStatus().getReasonPhrase(),
+                    String.format("User with id %s is not the owner of the poll", userId)
+                )
+            );
+        }
+    }
+
+    @DeleteMapping("{pollId}")
+    public ResponseEntity<Object> DeletePoll(@RequestHeader String userId, @PathVariable String pollId) {
+        try {
+            pollService.deletePoll(pollId, userId);
+            return ResponseEntity.status(204).body("Poll deleted");
+        } catch (ResourceNotFoundException notFoundException) {
+            return ResponseEntity.status(notFoundException.getHttpStatus()).body(
+                new ErrorResponse(
+                    notFoundException.getHttpStatus().value(),
+                    notFoundException.getHttpStatus().getReasonPhrase(),
+                    String.format("The poll with id %s doesn't exist.", pollId)
+                )
+            );
+        } catch (NoAccessException noAccessException) {
+            return ResponseEntity.status(noAccessException.getHttpStatus()).body(
+                new ErrorResponse(
+                    noAccessException.getHttpStatus().value(),
+                    noAccessException.getHttpStatus().getReasonPhrase(),
+                    String.format("User with id %s is not the owner of the poll", userId)
+                )
+            );
+        }
     }
 
     @PostMapping

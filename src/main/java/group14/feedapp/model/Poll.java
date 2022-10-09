@@ -1,17 +1,19 @@
 package group14.feedapp.model;
 
 import org.eclipse.persistence.annotations.UuidGenerator;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
-@UuidGenerator(name = "pollIdGenerator")
 public class Poll {
     @Id
-    @GeneratedValue(generator = "pollIdGenerator")
+    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
     private int pincode;
     private String question;
@@ -26,10 +28,10 @@ public class Poll {
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy = "poll", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "poll", cascade = {CascadeType.PERSIST, CascadeType.REMOVE })
     private Set<Vote> votes = new HashSet<>();
 
-    @OneToMany(mappedBy = "poll", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "poll", cascade = {CascadeType.PERSIST, CascadeType.REMOVE })
     private Set<IoTVotes> iotVotes = new HashSet<>();
 
 

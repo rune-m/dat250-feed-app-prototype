@@ -1,6 +1,7 @@
 package group14.feedapp.service;
 
-
+import group14.feedapp.exception.NoAccessException;
+import group14.feedapp.exception.ResourceNotFoundException;
 import group14.feedapp.model.Poll;
 import group14.feedapp.model.User;
 import group14.feedapp.repository.PollRepository;
@@ -14,7 +15,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class PollService implements IPollService {
-
 
     @Autowired
     private PollRepository repository;
@@ -36,11 +36,11 @@ public class PollService implements IPollService {
             Poll poll = pollOptional.get();
             User user = userService.getUserById(userId);
             if (user == null && poll.isPrivate()) {
-                return null; // Can't access private polls if not logged in
+                throw new NoAccessException(userId); // Can't access private polls if not logged in
             }
             return poll;
         }
-        return null;
+        throw new ResourceNotFoundException(String.valueOf(pincode));
     }
 
     @Override
@@ -95,6 +95,20 @@ public class PollService implements IPollService {
         }
 
 
+    }
+
+    @Override
+    public void deletePoll(String pollId, String userId) {
+        Optional<Poll> pollOptional = repository.findById(pollId);
+        if (pollOptional.isPresent()) {
+            if (pollOptional.get().getUser().getId().equals(userId)) {
+                repository.deleteById(pollId);
+            } else {
+                throw new NoAccessException(userId);
+            }
+        } else {
+            throw new ResourceNotFoundException(pollId);
+        }
     }
 
 }

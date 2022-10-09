@@ -3,6 +3,7 @@ package group14.feedapp.controller;
 import group14.feedapp.model.User;
 import group14.feedapp.service.IUserService;
 import group14.feedapp.utils.WebMapper;
+import group14.feedapp.web.UserCreateRequest;
 import group14.feedapp.web.UserWeb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User newUser = userService.createUser(user);
-        return ResponseEntity.ok(newUser);
+    public ResponseEntity<UserWeb> createUser(@RequestBody UserCreateRequest user) {
+        User newUser = userService.createUser(mapper.getMapper().map(user, User.class));
+        return ResponseEntity.ok(mapper.MapUserToWeb(newUser));
     }
 
 }

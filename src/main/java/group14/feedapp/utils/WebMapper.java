@@ -4,8 +4,11 @@ import group14.feedapp.enums.Answer;
 import group14.feedapp.model.Poll;
 import group14.feedapp.model.User;
 import group14.feedapp.model.Vote;
+import group14.feedapp.model.VoteCreateRequest;
 import group14.feedapp.web.PollWeb;
 import group14.feedapp.web.UserWeb;
+import group14.feedapp.web.VoteCreateRequestWeb;
+import group14.feedapp.web.VoteWeb;
 import org.apache.commons.lang3.tuple.Pair;
 import org.modelmapper.ModelMapper;
 
@@ -46,6 +49,18 @@ public class WebMapper {
     public UserWeb MapUserToWeb(User user) {
         UserWeb userWeb = mapper.map(user, UserWeb.class);
         return userWeb;
+    }
+    public VoteCreateRequest MapVoteRequestToInternal(VoteCreateRequestWeb voteRequest){
+        var voteInternal = mapper.map(voteRequest, VoteCreateRequest.class);
+        return voteInternal;
+    }
+    public VoteWeb MapVoteToWeb(Vote vote){
+        VoteWeb voteWeb = mapper.map(vote, VoteWeb.class);
+        return voteWeb;
+    }
+
+    public ModelMapper getMapper() {
+        return mapper;
     }
 
 }
