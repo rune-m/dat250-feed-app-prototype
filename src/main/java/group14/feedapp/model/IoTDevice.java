@@ -18,7 +18,7 @@ public class IoTDevice {
     private String name;
 
     @OneToMany(mappedBy = "votingDevice", cascade = CascadeType.PERSIST)
-    private Set<IoTVotes> votes = new HashSet<>();
+    private Set<IoTVote> votes = new HashSet<>();
 
     public String getId() {
         return id;
@@ -44,11 +44,11 @@ public class IoTDevice {
         this.name = name;
     }
 
-    public Set<IoTVotes> getVotes() {
+    public Set<IoTVote> getVotes() {
         return votes;
     }
 
-    public void setVotes(Set<IoTVotes> votes) {
+    public void setVotes(Set<IoTVote> votes) {
         this.votes = votes;
     }
 }

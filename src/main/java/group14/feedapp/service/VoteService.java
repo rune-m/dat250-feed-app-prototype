@@ -2,8 +2,11 @@ package group14.feedapp.service;
 
 import group14.feedapp.exception.ResourceAlreadyExistsException;
 import group14.feedapp.exception.ResourceNotFoundException;
+import group14.feedapp.model.IoTVote;
+import group14.feedapp.model.IoTVoteCreateRequest;
 import group14.feedapp.model.Vote;
 import group14.feedapp.model.VoteCreateRequest;
+import group14.feedapp.repository.IoTVoteRepository;
 import group14.feedapp.repository.PollRepository;
 import group14.feedapp.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +18,13 @@ public class VoteService implements IVoteService {
     @Autowired
     private VoteRepository voteRepository;
     @Autowired
-    private PollRepository pollRepository;
+    private IoTVoteRepository ioTVoteRepository;
     @Autowired
     private IPollService pollService;
     @Autowired
     private IUserService userService;
+    @Autowired
+    private IoTDeviceService deviceService;
 
     @Override
     @Transactional
@@ -40,5 +45,29 @@ public class VoteService implements IVoteService {
         vote.setUser(user);
         vote.setAnswer(voteRequest.getAnswer());
         return voteRepository.save(vote);
+    }
+
+    @Override
+    @Transactional
+    public IoTVote createDeviceVote(IoTVoteCreateRequest request, String deviceId) {
+        var pollId = request.getPollId();
+        var poll = pollService.getPollById(pollId);
+
+        if (poll == null) {
+            throw new ResourceNotFoundException("PollId " + pollId);
+        }
+
+        var device = deviceService.getDeviceById(deviceId);
+
+        if (device == null) {
+            throw new ResourceNotFoundException("DeviceId " + deviceId);
+        }
+
+        var vote = new IoTVote();
+        vote.setVotingDevice(device);
+        vote.setPoll(poll);
+        vote.setAnswerA(request.getAnswerA());
+        vote.setAnswerB(request.getAnswerB());
+        return ioTVoteRepository.save(vote);
     }
 }

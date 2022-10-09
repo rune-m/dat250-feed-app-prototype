@@ -1,7 +1,5 @@
 package group14.feedapp.model;
 
-import group14.feedapp.enums.Answer;
-import org.eclipse.persistence.annotations.UuidGenerator;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
@@ -10,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class IoTVotes {
+public class IoTVote {
 
     @Id
     @GeneratedValue(generator = "system-uuid")

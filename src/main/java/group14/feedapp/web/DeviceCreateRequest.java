@@ -1,6 +1,6 @@
 package group14.feedapp.web;
 
-public class IoTDeviceWeb {
+public class DeviceCreateRequest {
 
     private String id;
     private String name;
