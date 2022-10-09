@@ -1,8 +1,12 @@
 package group14.feedapp.controller;
 
+import group14.feedapp.model.Vote;
 import group14.feedapp.service.IoTDeviceService;
 import group14.feedapp.service.PollService;
 import group14.feedapp.service.UserService;
+import group14.feedapp.service.IVoteService;
+import group14.feedapp.utils.WebMapper;
+import group14.feedapp.web.VoteCreateRequestWeb;
 import group14.feedapp.web.VoteWeb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,18 +17,19 @@ import org.springframework.web.bind.annotation.*;
 public class VoteController {
 
     @Autowired
-    private UserService userService;
+    private IVoteService voteService;
 
-    @Autowired
-    private IoTDeviceService deviceService;
+    private WebMapper mapper = new WebMapper();
 
-    @Autowired
-    private PollService pollService;
+    @PostMapping
+    public ResponseEntity<VoteWeb> createVote(
+            @RequestHeader String userId,
+            @RequestBody VoteCreateRequestWeb voteRequest
+    ) {
 
-    @PostMapping("/{pollId}")
-    public ResponseEntity<VoteWeb> vote(
-            @RequestHeader("Authorization") String token,
-            @PathVariable("pollId") String pollId) {
+        var vote = mapper.MapVoteRequestToInternal(voteRequest);
 
+        Vote createdVote = voteService.createVote(vote, userId);
+        return ResponseEntity.ok(mapper.MapVoteToWeb(createdVote));
     }
 }

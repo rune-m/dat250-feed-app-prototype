@@ -1,18 +1,15 @@
 package group14.feedapp.model;
 
 import group14.feedapp.enums.Answer;
-import org.eclipse.persistence.annotations.UuidGenerator;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
-@UuidGenerator(name = "voteIdGenerator")
 public class Vote {
     @Id
-    @GeneratedValue(generator = "voteIdGenerator")
+    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
 
     private Answer answer;
