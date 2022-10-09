@@ -15,18 +15,5 @@ public interface IPollService {
 
     String createPoll(Poll poll);
 
-    String createPoll(String pincode,
-                      String question,
-                      String answerA,
-                      String answerB,
-                      String isPrivate,
-                      String startDate,
-                      String endDate,
-                      String isClosed,
-                      String userID);
-
-    int parseInt(String number);
-
-    LocalDateTime parseDateTime(String dateTime);
 
 }

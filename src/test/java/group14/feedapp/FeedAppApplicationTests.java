@@ -2,29 +2,34 @@ package group14.feedapp;
 
 import group14.feedapp.model.Poll;
 import group14.feedapp.model.User;
-import okhttp3.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.google.gson.Gson;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.junit.Assert;
 
-
-import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-
+@ComponentScan
 @SpringBootTest
 class FeedAppApplicationTests {
 
-	private static final String SERVER_PORT = "8080";
-	private static final String BASE_URL = "http://localhost:" + SERVER_PORT + "/";
 
-	private final OkHttpClient client = new OkHttpClient();
-	private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-	private final Gson gson = new Gson();
+	private TestRestTemplate restTemplate = new TestRestTemplate();
 
-	@BeforeClass
+	@LocalServerPort
+	final static String SERVER_PORT = "8080";
+
+	@BeforeAll
 	public static void startRESTServer() {
 		FeedAppApplication.main(new String[]{SERVER_PORT});
 	}
@@ -34,49 +39,34 @@ class FeedAppApplicationTests {
 	}
 
 	@Test
-	void canCreate(){
+	void createPoll() throws URISyntaxException {
+		final String baseUrl = "http://localhost:" + SERVER_PORT + "/api/poll/";
+		URI uri = new URI(baseUrl);
 		User user = new User();
-		user.setAdmin(false);
-		user.setName("Lars");
 		user.setId("10");
+		user.setName("Lars");
+		user.setAdmin(false);
 
-		Poll poll = new Poll(1234,
+		Poll poll = new Poll(10101,
 							"Do you like fish?",
 							"Yes",
 							"No",
 							false,
-							LocalDateTime.of(2022, 10, 7, 13, 50),
-							LocalDateTime.of(2022, 10, 8, 13, 50),
+							LocalDateTime.of(2022, 10, 10,16, 0),
+							LocalDateTime.of(2022, 10, 10, 18, 0),
 							false,
-							user
-							);
+							user);
 
-		String response = doPostRequest(poll);
+		HttpHeaders headers = new HttpHeaders();
 
-		System.out.println(response);
+		HttpEntity<Poll> request = new HttpEntity<>(poll, headers);
 
+		ResponseEntity<String> result = this.restTemplate.postForEntity(uri, request, String.class);
 
-
+		Assert.assertEquals("SUCCESS", result.getBody());
 
 	}
 
-	private String doPostRequest(Poll poll){
-		RequestBody body = RequestBody.create(gson.toJson(poll), JSON);
 
-		Request request =new Request.Builder()
-				.url(BASE_URL)
-				.post(body)
-				.build();
-
-		return doRequest(request);
-	}
-
-	private String doRequest(Request request) {
-		try (Response response = client.newCall(request).execute()) {
-			return Objects.requireNonNull(response.body()).string();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
 
 }
