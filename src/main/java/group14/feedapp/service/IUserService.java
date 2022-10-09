@@ -10,6 +10,7 @@ public interface IUserService {
     User getUserById(String id);
     User createUser(@RequestBody User user);
 
+    User updateUser(User authenticatedUser, User updatedUser);
     List<User> getAllUsers(User user);
 
 }
