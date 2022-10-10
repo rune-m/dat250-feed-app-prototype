@@ -1,5 +1,6 @@
 package group14.feedapp.service;
 
+import group14.feedapp.exception.NoAccessException;
 import group14.feedapp.exception.ResourceAlreadyExistsException;
 import group14.feedapp.exception.ResourceNotFoundException;
 import group14.feedapp.model.DeviceVote;
@@ -29,12 +30,20 @@ public class VoteService implements IVoteService {
     public Vote createVote(VoteCreateRequest voteRequest, User authenticatedUser) {
         var pollId = voteRequest.getPollId();
         var poll = pollService.getPollById(pollId);
+
         if (poll == null) {
             throw new ResourceNotFoundException("PollId " + pollId);
         }
-        if (poll.getVotes().stream().anyMatch(_votes -> authenticatedUser.getId().equals(_votes.getUser().getId()))){
+
+        if (authenticatedUser == null && poll.isPrivate()) {
+            throw new NoAccessException("Poll is private");
+        }
+
+        if (authenticatedUser != null
+                && poll.getVotes().stream().anyMatch(_votes -> authenticatedUser.getId().equals(_votes.getUser().getId()))){
             throw new ResourceAlreadyExistsException("PollId " + pollId);
         }
+
         var vote = new Vote();
         vote.setPoll(poll);
         vote.setUser(authenticatedUser);
