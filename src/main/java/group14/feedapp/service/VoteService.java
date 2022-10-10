@@ -38,7 +38,7 @@ public class VoteService implements IVoteService {
         }
 
         if (authenticatedUser == null && poll.isPrivate()) {
-            throw new NoAccessException("Poll is private");
+            throw new NoAccessException(null);
         }
 
         if (authenticatedUser != null

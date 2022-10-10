@@ -61,7 +61,11 @@ public class WebMapper {
     }
 
     public DeviceVoteWeb MapDeviceVoteToWeb(DeviceVote deviceVote) {
-        var deviceVoteWeb = mapper.map(deviceVote, DeviceVoteWeb.class);
+        DeviceVoteWeb deviceVoteWeb = new DeviceVoteWeb();
+        deviceVoteWeb.setId(deviceVote.getId());
+        deviceVoteWeb.setAnswerA(deviceVote.getAnswerA());
+        deviceVoteWeb.setAnswerB(deviceVote.getAnswerB());
+        deviceVoteWeb.setPoll(MapPollToWeb(deviceVote.getPoll()));
         return deviceVoteWeb;
     }
 

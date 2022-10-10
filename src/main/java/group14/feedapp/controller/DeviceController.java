@@ -25,7 +25,7 @@ public class DeviceController {
     @GetMapping
     public ResponseEntity<List<DeviceWeb>> getAllDevices(@RequestHeader(required = false) String userId) {
         if (userId == null) {
-            throw new NoAccessException("Not authorized to get devices.");
+            throw new NoAccessException(null);
         }
 
         var devices = deviceService.getAllDevices(userId);
