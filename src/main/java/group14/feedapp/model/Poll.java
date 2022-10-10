@@ -1,5 +1,6 @@
 package group14.feedapp.model;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@DynamicUpdate
 public class Poll {
     @Id
     @GeneratedValue(generator="system-uuid")
