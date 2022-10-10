@@ -19,7 +19,7 @@ public class WebMapper {
 
     public PollWeb MapPollToWeb(Poll poll, String userId) {
         PollWeb pollWeb = mapper.map(poll, PollWeb.class);
-        pollWeb.setUserId(poll.getUser().getId());
+        pollWeb.setUserName(poll.getUser().getName());
 
         Pair<Integer, Integer> counts = pollUtils.countPollVotes(poll);
         pollWeb.setAnswerACount(counts.getLeft());

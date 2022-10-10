@@ -1,7 +1,6 @@
 package group14.feedapp.web;
 
 import group14.feedapp.enums.Answer;
-import group14.feedapp.model.Vote;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +11,7 @@ public class PollWeb {
     private String question;
     private String answerA;
     private String answerB;
-    private String userId;
+    private String userName;
     private int answerACount;
     private int answerBCount;
     private boolean isPrivate;
@@ -61,12 +60,12 @@ public class PollWeb {
         this.answerB = answerB;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public int getAnswerACount() {
