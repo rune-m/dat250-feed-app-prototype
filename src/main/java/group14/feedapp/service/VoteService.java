@@ -1,5 +1,6 @@
 package group14.feedapp.service;
 
+import group14.feedapp.exception.NoAccessException;
 import group14.feedapp.exception.ResourceAlreadyExistsException;
 import group14.feedapp.exception.ResourceNotFoundException;
 import group14.feedapp.model.DeviceVote;
@@ -12,6 +13,8 @@ import group14.feedapp.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Service
 public class VoteService implements IVoteService {
@@ -29,12 +32,21 @@ public class VoteService implements IVoteService {
     public Vote createVote(VoteCreateRequest voteRequest, User authenticatedUser) {
         var pollId = voteRequest.getPollId();
         var poll = pollService.getPollById(pollId);
+
         if (poll == null) {
             throw new ResourceNotFoundException("PollId " + pollId);
         }
-        if (poll.getVotes().stream().anyMatch(_votes -> authenticatedUser.getId().equals(_votes.getUser().getId()))){
+
+        if (authenticatedUser == null && poll.isPrivate()) {
+            throw new NoAccessException("Poll is private");
+        }
+
+        if (authenticatedUser != null
+                && poll.getVotes().stream().anyMatch(_votes -> Objects.equals(authenticatedUser.getId(),
+                    _votes.getUser() != null ? _votes.getUser().getId() : null))){
             throw new ResourceAlreadyExistsException("PollId " + pollId);
         }
+
         var vote = new Vote();
         vote.setPoll(poll);
         vote.setUser(authenticatedUser);

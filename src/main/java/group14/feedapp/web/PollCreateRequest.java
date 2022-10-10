@@ -1,32 +1,25 @@
 package group14.feedapp.web;
 
-import group14.feedapp.enums.Answer;
-
 import java.time.LocalDateTime;
 
-public class PollWeb {
+public class PollCreateRequest {
 
-    private String id;
     private int pincode;
+
     private String question;
+
     private String answerA;
+
     private String answerB;
-    private String userName;
-    private int answerACount;
-    private int answerBCount;
+
     private boolean isPrivate;
+
     private LocalDateTime startDate;
+
     private LocalDateTime endDate;
+
     private boolean isClosed;
-    private Answer yourAnswer;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public int getPincode() {
         return pincode;
@@ -58,30 +51,6 @@ public class PollWeb {
 
     public void setAnswerB(String answerB) {
         this.answerB = answerB;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public int getAnswerACount() {
-        return answerACount;
-    }
-
-    public void setAnswerACount(int answerACount) {
-        this.answerACount = answerACount;
-    }
-
-    public int getAnswerBCount() {
-        return answerBCount;
-    }
-
-    public void setAnswerBCount(int answerBCount) {
-        this.answerBCount = answerBCount;
     }
 
     public boolean isPrivate() {
@@ -116,11 +85,7 @@ public class PollWeb {
         isClosed = closed;
     }
 
-    public Answer getYourAnswer() {
-        return yourAnswer;
-    }
 
-    public void setYourAnswer(Answer yourAnswer) {
-        this.yourAnswer = yourAnswer;
-    }
+
+
 }

@@ -47,7 +47,9 @@ public class PollService implements IPollService {
     public List<Poll> getAllOngoingPolls(String userId) {
         List<Poll> allPolls = repository.findAll();
 
-        User user = userService.getUserById(userId);
+        User user = userId != null
+                ? userService.getUserById(userId)
+                : null;
 
         LocalDateTime now = LocalDateTime.now();
 
@@ -80,18 +82,12 @@ public class PollService implements IPollService {
     }
 
     @Override
-    public String createPoll(Poll poll) {
-        String userID = poll.getUser().getId();
-
-        if (userService.getUserById(userID) == null){
-
-            return String.format("User with ID '%s' is not a registered user.", userID);
-        }
+    public Poll createPoll(Poll poll) {
         try{
             repository.save(poll);
-            return "SUCCESS";
+            return poll;
         } catch (Exception e) {
-            return "Could not save poll";
+            return null;
         }
 
 

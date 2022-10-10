@@ -13,8 +13,7 @@ public interface IPollService {
     Poll getPollByPincode(int pincode, String userId) throws NoAccessException, ResourceNotFoundException;
     List<Poll> getAllOngoingPolls(String userId);
     void deletePoll(String pollId, String userId) throws NoAccessException, ResourceNotFoundException;
-    String createPoll(Poll poll);
     Poll updatePoll(Poll poll, User authorizedUser);
-
-
+    Poll createPoll(Poll poll);
+    
 }

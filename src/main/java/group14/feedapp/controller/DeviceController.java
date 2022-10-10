@@ -1,5 +1,6 @@
 package group14.feedapp.controller;
 
+import group14.feedapp.exception.NoAccessException;
 import group14.feedapp.model.Device;
 import group14.feedapp.service.DeviceService;
 import group14.feedapp.utils.WebMapper;
@@ -22,12 +23,16 @@ public class DeviceController {
     private final WebMapper mapper = new WebMapper();
 
     @GetMapping
-    public ResponseEntity<List<DeviceWeb>> getAllDevices(@RequestHeader String userId) {
+    public ResponseEntity<List<DeviceWeb>> getAllDevices(@RequestHeader(required = false) String userId) {
+        if (userId == null) {
+            throw new NoAccessException("Not authorized to get devices.");
+        }
+
         var devices = deviceService.getAllDevices(userId);
         var mappedDevices = devices.stream()
                 .map(mapper::MapDeviceToWeb)
                 .collect(Collectors.toList());
-        return mappedDevices.size() > 0 ? ResponseEntity.ok(mappedDevices) : ResponseEntity.status(401).body(null);
+        return ResponseEntity.ok(mappedDevices);
     }
 
     @GetMapping("/{id}")

@@ -19,6 +19,11 @@ public class PollUtils implements IPollUtils {
             else if (vote.getAnswer() == Answer.ANSWER_B)
                 countB.getAndIncrement();
         });
+        poll.getDeviceVotes().stream().forEach(deviceVote -> {
+            countA.getAndAdd(deviceVote.getAnswerA());
+            countB.getAndAdd(deviceVote.getAnswerB());
+        });
+
         return Pair.of(countA.get(), countB.get());
     }
 }

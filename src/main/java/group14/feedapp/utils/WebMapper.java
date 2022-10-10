@@ -19,7 +19,7 @@ public class WebMapper {
 
     public PollWeb MapPollToWeb(Poll poll, String userId) {
         PollWeb pollWeb = mapper.map(poll, PollWeb.class);
-        pollWeb.setUserId(poll.getUser().getId());
+        pollWeb.setUserName(poll.getUser().getName());
 
         Pair<Integer, Integer> counts = pollUtils.countPollVotes(poll);
         pollWeb.setAnswerACount(counts.getLeft());
@@ -48,7 +48,10 @@ public class WebMapper {
         return voteInternal;
     }
     public VoteWeb MapVoteToWeb(Vote vote){
-        VoteWeb voteWeb = mapper.map(vote, VoteWeb.class);
+        VoteWeb voteWeb = new VoteWeb();
+        voteWeb.setAnswer(vote.getAnswer());
+        voteWeb.setId(vote.getId());
+        voteWeb.setPoll(MapPollToWeb(vote.getPoll()));
         return voteWeb;
     }
 
@@ -76,6 +79,9 @@ public class WebMapper {
         Poll poll = mapper.map(request, Poll.class);
         poll.setPincode(pincode);
         poll.setUser(authorizedUser);
+
+    public Poll MapPollCreateRequestToPoll(PollCreateRequest request){
+        Poll poll = mapper.map(request, Poll.class);
         return poll;
     }
 

@@ -10,6 +10,7 @@ import group14.feedapp.utils.IParsingUtils;
 import group14.feedapp.utils.ParsingUtils;
 import group14.feedapp.utils.WebMapper;
 import group14.feedapp.web.PollUpdateRequest;
+import group14.feedapp.web.PollCreateRequest;
 import group14.feedapp.web.PollWeb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,7 @@ public class PollController {
 
         List<Poll> polls = pollService.getAllOngoingPolls(authorizedUser.getId());
         List<PollWeb> mappedPolls = polls.stream().map(poll -> mapper.MapPollToWeb(poll, authorizedUser.getId())).collect(Collectors.toList());
+
         return ResponseEntity.ok(mappedPolls);
     }
 
@@ -61,14 +63,14 @@ public class PollController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createPoll(@RequestBody Poll poll){
-        String response = pollService.createPoll(poll);
-        if (response == "SUCCESS"){
-            return ResponseEntity.ok(response);
-        }
-        return ResponseEntity.status(400).body(
-            new ErrorResponse(400, "Bad request", response));
-
+    public ResponseEntity<Object> createPoll(@RequestHeader String token,
+                                             @RequestBody PollCreateRequest request){
+        User authorizedUser = authService.getAuthorizedUser(token);
+        Poll poll = mapper.MapPollCreateRequestToPoll(request);
+        poll.setUser(authorizedUser);
+        Poll response = pollService.createPoll(poll);
+        return (response != null) ? ResponseEntity.ok(mapper.MapPollToWeb(poll)) :
+                                ResponseEntity.status(400).body(new ErrorResponse(400, "Bad request", "Could not save poll"));
     }
 
     @PutMapping("{pincode}")

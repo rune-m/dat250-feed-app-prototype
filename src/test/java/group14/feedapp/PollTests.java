@@ -2,6 +2,8 @@ package group14.feedapp;
 
 import group14.feedapp.model.Poll;
 import group14.feedapp.model.User;
+import group14.feedapp.web.PollCreateRequest;
+import group14.feedapp.web.PollWeb;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -31,30 +33,32 @@ public class PollTests {
 
     @Test
     void createPoll() throws URISyntaxException {
-        final String baseUrl = "http://localhost:" + SERVER_PORT + "/api/poll/";
+        String userId = "10";
+        final String baseUrl = "http://localhost:" + SERVER_PORT + "/api/poll";
         URI uri = new URI(baseUrl);
         User user = new User();
         user.setId("10");
         user.setName("Lars");
         user.setAdmin(false);
 
-        Poll poll = new Poll(10101,
-                "Do you like fish?",
-                "Yes",
-                "No",
-                false,
-                LocalDateTime.of(2022, 10, 10,16, 0),
-                LocalDateTime.of(2022, 10, 10, 18, 0),
-                false,
-                user);
+        PollCreateRequest poll = new PollCreateRequest();
+        poll.setAnswerA("yes");
+        poll.setAnswerB("No");
+        poll.setQuestion("Do you like fish?");
+        poll.setPincode(101010);
+        poll.setPrivate(false);
+        poll.setClosed(false);
+        poll.setStartDate(LocalDateTime.of(2022, 10, 10,16, 0));
+        poll.setEndDate(LocalDateTime.of(2022, 10, 10, 18, 0));
 
         HttpHeaders headers = new HttpHeaders();
+        headers.add("token", userId);
 
-        HttpEntity<Poll> request = new HttpEntity<>(poll, headers);
+        HttpEntity<PollCreateRequest> request = new HttpEntity<>(poll, headers);
 
-        ResponseEntity<String> result = this.restTemplate.postForEntity(uri, request, String.class);
+        ResponseEntity<PollWeb> result = this.restTemplate.postForEntity(uri, request, PollWeb.class);
 
-        Assert.assertEquals("SUCCESS", result.getBody());
+        Assert.assertEquals(result.getBody().getClass(), PollWeb.class);
 
     }
 
