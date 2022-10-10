@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Service
 public class VoteService implements IVoteService {
     @Autowired
@@ -40,7 +42,8 @@ public class VoteService implements IVoteService {
         }
 
         if (authenticatedUser != null
-                && poll.getVotes().stream().anyMatch(_votes -> authenticatedUser.getId().equals(_votes.getUser().getId()))){
+                && poll.getVotes().stream().anyMatch(_votes -> Objects.equals(authenticatedUser.getId(),
+                    _votes.getUser() != null ? _votes.getUser().getId() : null))){
             throw new ResourceAlreadyExistsException("PollId " + pollId);
         }
 

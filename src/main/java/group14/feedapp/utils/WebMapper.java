@@ -48,7 +48,10 @@ public class WebMapper {
         return voteInternal;
     }
     public VoteWeb MapVoteToWeb(Vote vote){
-        VoteWeb voteWeb = mapper.map(vote, VoteWeb.class);
+        VoteWeb voteWeb = new VoteWeb();
+        voteWeb.setAnswer(vote.getAnswer());
+        voteWeb.setId(vote.getId());
+        voteWeb.setPoll(MapPollToWeb(vote.getPoll()));
         return voteWeb;
     }
 
