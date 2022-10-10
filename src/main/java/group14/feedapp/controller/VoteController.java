@@ -1,6 +1,7 @@
 package group14.feedapp.controller;
 
 import group14.feedapp.model.DeviceVote;
+import group14.feedapp.model.User;
 import group14.feedapp.model.Vote;
 import group14.feedapp.service.IAuthService;
 import group14.feedapp.service.IVoteService;
@@ -25,14 +26,20 @@ public class VoteController {
 
     @PostMapping
     public ResponseEntity<VoteWeb> createVote(
-            @RequestHeader String token,
+            @RequestHeader(required = false) String token,
             @RequestBody VoteCreateRequestWeb voteRequest
     ) {
+        User authorizedUser;
 
-        var autherizedUser = authService.getAuthorizedUser(token);
+        if (token == null || token.isEmpty() || token.trim().isBlank()) {
+            authorizedUser = null;
+        } else {
+            authorizedUser = authService.getAuthorizedUser(token);
+        }
+
         var vote = mapper.MapVoteRequestToInternal(voteRequest);
 
-        Vote createdVote = voteService.createVote(vote, autherizedUser);
+        Vote createdVote = voteService.createVote(vote, authorizedUser);
         return ResponseEntity.ok(mapper.MapVoteToWeb(createdVote));
     }
 

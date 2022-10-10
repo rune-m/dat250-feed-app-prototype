@@ -47,7 +47,9 @@ public class PollService implements IPollService {
     public List<Poll> getAllOngoingPolls(String userId) {
         List<Poll> allPolls = repository.findAll();
 
-        User user = userService.getUserById(userId);
+        User user = userId != null
+                ? userService.getUserById(userId)
+                : null;
 
         LocalDateTime now = LocalDateTime.now();
 

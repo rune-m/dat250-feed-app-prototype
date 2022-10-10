@@ -25,7 +25,7 @@ public class PollController {
     private final WebMapper mapper = new WebMapper();
 
     @GetMapping
-    public ResponseEntity<List<PollWeb>> getAllPolls(@RequestHeader String userId) {
+    public ResponseEntity<List<PollWeb>> getAllPolls(@RequestHeader(required = false) String userId) {
         List<Poll> polls = pollService.getAllOngoingPolls(userId);
         List<PollWeb> mappedPolls = polls.stream().map(poll -> mapper.MapPollToWeb(poll, userId)).collect(Collectors.toList());
         return ResponseEntity.ok(mappedPolls);
