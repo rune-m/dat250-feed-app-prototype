@@ -79,6 +79,8 @@ public class WebMapper {
         Poll poll = mapper.map(request, Poll.class);
         poll.setPincode(pincode);
         poll.setUser(authorizedUser);
+        return poll;
+    }
 
     public Poll MapPollCreateRequestToPoll(PollCreateRequest request){
         Poll poll = mapper.map(request, Poll.class);
