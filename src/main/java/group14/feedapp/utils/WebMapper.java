@@ -72,6 +72,11 @@ public class WebMapper {
         return device;
     }
 
+    public Poll MapPollCreateRequestToPoll(PollCreateRequest request){
+        Poll poll = mapper.map(request, Poll.class);
+        return poll;
+    }
+
     public ModelMapper getMapper() {
         return mapper;
     }

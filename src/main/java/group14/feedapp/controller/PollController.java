@@ -4,8 +4,11 @@ import group14.feedapp.exception.ErrorResponse;
 import group14.feedapp.exception.NoAccessException;
 import group14.feedapp.exception.ResourceNotFoundException;
 import group14.feedapp.model.Poll;
+import group14.feedapp.model.User;
+import group14.feedapp.service.IAuthService;
 import group14.feedapp.service.IPollService;
 import group14.feedapp.utils.WebMapper;
+import group14.feedapp.web.PollCreateRequest;
 import group14.feedapp.web.PollWeb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,9 @@ public class PollController {
 
     @Autowired
     private IPollService pollService;
+
+    @Autowired
+    private IAuthService authService;
 
     private final WebMapper mapper = new WebMapper();
 
@@ -93,14 +99,14 @@ public class PollController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createPoll(@RequestBody Poll poll){
-        String response = pollService.createPoll(poll);
-        if (response == "SUCCESS"){
-            return ResponseEntity.ok(response);
-        }
-        return ResponseEntity.status(400).body(
-                new ErrorResponse(400, "Bad request", response));
-
+    public ResponseEntity<Object> createPoll(@RequestHeader String token,
+                                             @RequestBody PollCreateRequest request){
+        User authorizedUser = authService.getAuthorizedUser(token);
+        Poll poll = mapper.MapPollCreateRequestToPoll(request);
+        poll.setUser(authorizedUser);
+        Poll response = pollService.createPoll(poll);
+        return (response != null) ? ResponseEntity.ok(mapper.MapPollToWeb(poll)) :
+                                ResponseEntity.status(400).body(new ErrorResponse(400, "Bad request", "Could not save poll"));
     }
 
 
