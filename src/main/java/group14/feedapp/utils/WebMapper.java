@@ -75,6 +75,13 @@ public class WebMapper {
         return device;
     }
 
+    public Poll MapPollUpdateRequestToInternal(PollUpdateRequest request, int pincode, User authorizedUser) {
+        Poll poll = mapper.map(request, Poll.class);
+        poll.setPincode(pincode);
+        poll.setUser(authorizedUser);
+        return poll;
+    }
+
     public Poll MapPollCreateRequestToPoll(PollCreateRequest request){
         Poll poll = mapper.map(request, Poll.class);
         return poll;

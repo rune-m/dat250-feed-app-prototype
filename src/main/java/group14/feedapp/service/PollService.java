@@ -107,4 +107,14 @@ public class PollService implements IPollService {
         }
     }
 
+    @Override
+    public Poll updatePoll(Poll updatedPoll, User authorizedUser) {
+        Poll existingPoll = getPollById(updatedPoll.getId());
+        if (existingPoll == null)
+            throw new ResourceNotFoundException(String.format("Poll with id %s doesn't exist.", updatedPoll.getId()));
+        if (existingPoll.getUser().getId() != authorizedUser.getId())
+            throw new NoAccessException(String.format("User is not owner of the poll."));
+        return repository.save(updatedPoll);
+    }
+
 }
