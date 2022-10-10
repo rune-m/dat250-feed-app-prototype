@@ -36,10 +36,6 @@ public class PollTests {
         String userId = "10";
         final String baseUrl = "http://localhost:" + SERVER_PORT + "/api/poll";
         URI uri = new URI(baseUrl);
-        User user = new User();
-        user.setId("10");
-        user.setName("Lars");
-        user.setAdmin(false);
 
         PollCreateRequest poll = new PollCreateRequest();
         poll.setAnswerA("yes");
@@ -55,7 +51,6 @@ public class PollTests {
         headers.add("token", userId);
 
         HttpEntity<PollCreateRequest> request = new HttpEntity<>(poll, headers);
-
         ResponseEntity<PollWeb> result = this.restTemplate.postForEntity(uri, request, PollWeb.class);
 
         Assert.assertEquals(result.getBody().getClass(), PollWeb.class);
